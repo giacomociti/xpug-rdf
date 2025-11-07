@@ -1,0 +1,446 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>RDF</title>
+
+		<link rel="stylesheet" href="node_modules/reveal.js/dist/reset.css" />
+		<link rel="stylesheet" href="node_modules/reveal.js/dist/reveal.css" />
+		<link rel="stylesheet" href="node_modules/reveal.js/dist/theme/dracula.css" />
+		<!-- Theme used for syntax highlighted code -->
+		<link rel="stylesheet" href="node_modules/reveal.js/plugin/highlight/monokai.css">
+		<style>
+		/* Make code blocks wrap and avoid horizontal scrollbars */
+		.reveal pre,
+		.reveal pre code,
+		.reveal code {
+		white-space: pre-wrap !important;
+		word-break: break-word !important;
+		overflow-x: auto;
+		max-width: 100%;
+		box-sizing: border-box;
+		}
+
+		.reveal h1 { font-size: 2em !important; }
+		.reveal h2 { font-size: 1.5em !important; }
+		.reveal h3 { font-size: 1.2em !important; }
+
+		</style>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section>
+					<h3>Semantic Data Integration with RDF</h3>
+					<q>There are more things in heaven and earth, Horatio, than are dreamt of in your philosophy</q>
+					<p class="source"><small>William Shakespeare, Hamlet</small></p>
+					<q>All models are wrong, but some are useful</q>
+					<p class="source"><small>George E. P. Box</small></p>
+					<q>The map is not the territory</q>
+					<p class="source"><small>Alfred Korzybski</small></p>
+
+				</section>
+
+				<section>
+					<h2>Agenda</h2>
+					<p>we  cover:</p>
+					<ul>
+						<li>the RDF data model</li>
+						<li>the stack</li>
+						<li>converting tables to RDF</li>
+						<li>converting trees to RDF</li>
+						<li>semantics</li>
+					</ul>
+				</section>
+
+				<section>
+					<h2>Agenda</h2>
+					<p>we skip:</p>
+					<ul>
+						<li>
+							<p>politics (people, governance)</p>
+						</li>
+						<li>
+							<p>architecture</p>
+							<ul>
+								<li>nothing special about RDF</li>
+								<li>RDF embraces the web</li>
+							</ul>
+						</li>
+					</ul>
+				<p>people and architecture <em>are</em> important but we focus on domain modeling</p>
+				</section>
+
+				<section>
+					<h2>History</h2>
+					<p>a web of data (Tim Berners Lee)</p>
+					<p><a href="https://www.lassila.org/publications/2001/SciAm.pdf">the semantic web</a></p>
+					<p><a href="https://www.w3.org/DesignIssues/LinkedData.html">linked open data</a></p>
+					<p><a href="https://link.springer.com/book/10.1007/978-3-031-01916-6">knowledge graphs</a></p>
+					<p>... it's still <a href="https://www.w3.org/TR/PR-rdf-syntax/Overview.html">RDF</a></p>
+				</section>
+
+				<section>
+					<h2>The RDF Data Model</h2>
+					<p>Resource Description Framework</p>
+					<p>elementary facts expressed as triples:</p>
+					<div class="fragment">
+					<p >subject - predicate - object</p>
+					<p>Giacomo - lives in - Bologna</p>
+					</div>
+					<p class="fragment">it's a <a href="https://s.zazuko.com/2qfRXzb">graph</a> data model</p>
+					<aside class="notes">
+  						Show an example and compare with LPG (data structure vs. representation)
+						
+  					</aside>
+				</section>
+
+				<section>
+					<h2>Semantics</h2>
+					<p>A linguistic expression <em>denotes</em> something <q>real</q></p>
+
+					<div>
+					<dl class="fragment">
+						<small>The cognitive scientist:<q>Reality in people's mind</small></q><br>
+						<small>The philosopher:<q>Ontology captures reality</q></small><br>
+						<small>The mathematician:<q>Let's use sets</q></small><br>
+					</dl>
+					</div>
+					<em class="fragment">takeaway: interpret data in domain terms</em>
+					<aside class="notes">
+  						Hint at reasoners but stress the first point. <br>
+						interpret legacy structures in business terms
+  					</aside>
+				</section>
+
+				<section>
+					<h2>Data Integration</h2>
+					destructure your data into triples and merge them
+
+					<aside class="notes">
+  						praise RDF granularity <br>
+						back to example: separate sources, sameAs
+  					</aside>
+				</section>
+
+				<section>
+					<h2>Identifiers</h2>
+					<p>Resources are identified by: </p>
+					<ul>
+						<li><em>URIs</em> (Uniform Resource Identifiers)</li>
+						<li>actually <em>IRIs</em> (<em>Internationalized</em> Resource Identifiers)</li>
+						<li>better if <em>URLs</em> (Uniform Resource <em>Locators</em>)</li>
+					</ul>
+
+					ex: <a href="http://dbpedia.org/resource/Bologna">http://dbpedia.org/resource/Bologna</a>
+					<aside class="notes">
+  						URL useful for humans and machines
+  					</aside>
+
+				</section>
+
+				<section>
+					<h2>The stack</h2>
+					<a href="https://www.w3.org/TR/rdf11-primer/">W3C standards</a>
+					<ul>
+						<li>data model (RDF)</li>
+						<li>serialization (N-Triples, Turtle, JSON-LD, RDF/XML)</li>
+						<li>query (SPARQL)</li>
+						<li>vocabularies (SKOS)</li>
+						<li>ontologies (RDFS, OWL)</li>
+						<li>validation (SHACL shapes)</li>
+						<li>mappings (CSVW, R2RML)</li>
+					</ul>
+				</section>
+
+				<section>
+				<h2>The stack - serialization</h2>
+				<img src="assets/mona.svg" alt="Diagram">
+				<div class="r-stack">
+					<div class="fragment fade-in-then-out" data-fragment-index="0">
+						<img title="ntriples" src="assets/ntriples.gif" alt="Diagram">
+						<p class="highlight-blue">N-Triples</p>
+					</div>
+					<div class="fragment fade-in-then-out" data-fragment-index="1">
+						<img src="assets/turtle.gif">
+						<p class="highlight-blue">Turtle</p>
+					</div>
+					<div class="fragment fade-in-then-out" data-fragment-index="2">
+						 <img src="assets/jsonld.gif" alt="Diagram">
+						 <p class="highlight-blue">JSON-LD</p>
+					</div>
+					<div class="fragment fade-in-then-out" data-fragment-index="3">
+						<p>😱</p>
+						<p class="highlight-blue">RDF/XML</p>
+					</div>
+				</div>
+
+
+				</section>
+
+				<section>
+					<h2>The stack - query language</h2>
+					<p>SPARQL (a bit like SQL and Cypher)</p>
+					<p class="fragment">query language <em>and protocol</em></p>
+					<p class="fragment">federated queries</p>
+					<p class="fragment">Example: <a href="https://qlever.cs.uni-freiburg.de/yago-4/ehYwlR">Female Astronauts ordered by age</a></p>
+				</section>
+
+				<section>
+					<h2>The stack - schema languages</h2>
+					<p>RDF can be used schemaless</p>
+					<p>RDF is self-descriptive</p>
+					<div style="display: flex">
+						<div style="font-size: 80%; width: fit-content;">
+							<pre class="fragment">
+:p1 rdf:type :Person.
+:p1 :name "Pat".</pre>
+							<pre class="fragment">
+:Person rdf:type rdfs:Class. 
+:name rdf:type rdf:Property.</pre>
+							<pre class="fragment">:Person rdfs:comment "A (non-fictional) person" .</pre>
+						</div>
+
+						<div style="font-size: 80%; width: max-content">
+
+							<pre class="fragment">:Person rdfs:subClassOf :Mortal. </pre>
+							<pre class="fragment">:name rdfs:subPropertyOf :label. </pre>
+
+							<pre class="fragment">
+:name rdfs:domain :Person.
+:name rdfs:range xsd:string.</pre>
+						</div>
+
+					</div>
+
+
+				
+
+				</section>
+
+				<section>
+					<h2>The stack - schema languages</h2>
+					<p>SHACL for data shapes (validation)</p>
+					<p>RDFS and OWL for ontological reasoning</p>
+					<p class="fragment"><em>SHACL is about the data, RDFS/OWL is about the meaning</em></p>
+				</section>
+
+				<section>
+					<h2>Open World Assumption</h2>
+					<p>Each person has exactly one birth place</p>
+					<pre><code>
+:p1 rdf:type :Person .
+:p2 rdf:type :Person ; :birthPlace :NewYork .
+:p3 rdf:type :Person ; :birthPlace :NewYork , wd:Q60 .
+					</code></pre>
+					<ul>
+						<li class="fragment">In SHACL (closed world) only <em>:p2</em> is valid.</li>
+						<li class="fragment">In OWL (open world):</li>
+						<ul>
+							<li class="fragment"><em>:p1</em> is also acceptable </li>
+							<li class="fragment"><em>:p3</em> implies <em>:NewYork owl:sameAs wd:Q60 </em></li>
+						</ul>
+					</ul>
+
+				</section>
+
+				<section>
+					<h2>The stack - ... and much more</h2>
+					<p>SKOS (controlled vocabularies, thesauri)</p>
+					<p>mapping languages</p>
+					<p>rule languages</p>
+				</section>
+
+				<section>
+					<h2>Mapping Tables</h2>
+					<table style="border: 1px solid black;">
+						<caption>Product</caption>
+						<tr><td>ID (PK)</td><td class="fragment grow highlight-green" data-fragment-index="1">name</td><td>category</td></tr>
+						<tr>
+						<td class="fragment grow highlight-green" data-fragment-index="1">p1</td>
+						<td class="fragment grow highlight-blue" data-fragment-index="0">foo</td>
+						<td>c1</td>
+						</tr>
+						<tr><td>p2</td><td>bar</td><td>c2</td></tr>
+					</table>
+					<p>
+						<strong class="fragment fade-in-then-out" data-fragment-index="2">p1</strong>
+						<strong class="fragment fade-in-then-out" data-fragment-index="2">name</strong>
+						<strong class="fragment fade-in-then-out" data-fragment-index="2">foo</strong>
+					</p>
+					<div style="display: flex; gap: 2em; justify-content: left;">
+					<div style="font-size: smaller;" class="fragment" data-fragment-index="3">
+						<pre>
+							<code>
+:p1 rdf:type :Product .
+:p1 :name "foo" .
+:p1 :category :c1 .
+							</code>
+						</pre>
+					</div>
+					<div style="font-size: smaller;" class="fragment" data-fragment-index="4">
+						<pre>
+							<code>
+:p2 rdf:type :Product .
+:p2 :name "bar" .
+:p2 :category :c2 .
+							</code>
+						</pre>
+					</div>
+					</div>
+				</section>
+
+				<section>
+					<h2>Mapping Tables</h2>
+					<table style="border: 1px solid black;">
+						<caption>Category</caption>
+						<tr><td>ID (PK)</td><td>name</td><td>parent</td></tr>
+						<tr><td>c1</td><td>wine</td><td>c2</td></tr>
+						<tr><td>c2</td><td>food</td><td <em>(NULL)</em></td></tr>
+					</table>
+					<div style="display: flex; gap: 2em; justify-content: left;">
+						<div class="fragment" style="font-size: smaller;">
+						<pre>
+							<code>
+:c1 rdf:type :Category .
+:c1 :name "wine" .
+:c1 :parent :c2 .
+							</code>
+						</pre>
+						</div>
+						<div class="fragment" style="font-size: smaller;">
+						<pre>
+							<code>
+:c2 rdf:type :Category .
+:c2 :name "food" .
+# what about parent?
+							</code>
+						</pre>
+						</div>
+					</div>
+				</section>
+
+				<section>
+					<h2>Mapping Trees</h2>
+					<p>(a tree is a graph)</p>
+					<div style="display: flex; gap: 2em; justify-content: left;">
+						<div class="fragment" style="font-size: smaller;">
+							<p>JSON</p>
+							<pre>
+								<code>
+{
+    "product": "p1",
+    "UK": {
+        "price": 25,
+        "validFrom": "2024-01-01",
+        "validTo": "2025-01-01"
+    },
+    "US": {
+        "price": 29,
+        "validFrom": "2024-01-01",
+        "validTo": "2025-01-01"
+    }
+}
+								</code>
+							</pre>
+
+						</div>
+						<div class="fragment" style="font-size: smaller;">
+							<p>Turtle</p>
+							<pre>
+								<code>
+[
+  :product :p1 ;
+	:uk [
+		:price 25 ;
+		:validFrom "2023-01-01" ;
+		:validTo "2026-01-01" ;
+	] ;
+	:us [
+		:price 29 ;
+		:validFrom "2024-01-01" ;
+		:validTo "2025-01-01" ;
+	]
+] .
+								</code>
+							</pre>
+						</div>
+					</div>
+
+				</section>
+
+				<section>
+					<h2>Blank nodes</h2>
+					<div style="display: flex; gap: 2em; justify-content: left;">
+						<div style="font-size: smaller;">
+							<pre>
+								<code>
+[
+  :product :p1 ;
+	:uk [
+		:price 25 ;
+		:validFrom "2023-01-01" ;
+		:validTo "2026-01-01" ;
+	] ;
+	:us [
+		:price 29 ;
+		:validFrom "2024-01-01" ;
+		:validTo "2025-01-01" ;
+	]
+] .
+								</code>
+							</pre>
+
+						</div>
+						<div style="font-size: smaller;">
+							<pre>
+								<code>
+_:b1 :product :p1 .
+_:b1 :uk _:b2 .
+_:b2 :price 25 .
+_:b2 :validFrom "2023-01-01" .
+_:b2 :validTo "2026-01-01" .
+_:b1 :us _:b3 .
+_:b3 :price 29 .
+_:b3 :validFrom "2024-01-01" .
+_:b3 :validTo "2025-01-01" .
+								</code>
+							</pre>
+						</div>
+					</div>
+
+				</section>
+
+				<section>
+					<h2>Merging all</h2>
+					<img src="assets\all.svg" alt="">
+				</section>
+
+				<section>
+					<q>The semantic web is the future... and always will be</q>
+					<h2>Thanks!</h2>
+				</section>
+			</div>
+		</div>
+
+		<script src="node_modules/reveal.js/dist/reveal.js"></script>
+		<script src="node_modules/reveal.js/plugin/notes/notes.js"></script>
+		<script src="node_modules/reveal.js/plugin/markdown/markdown.js"></script>
+		<script src="node_modules/reveal.js/plugin/highlight/highlight.js"></script>
+		<script>
+			// More info about initialization & config:
+			// - https://revealjs.com/initialization/
+			// - https://revealjs.com/config/
+			Reveal.initialize({
+				hash: true,
+
+				// Learn about plugins: https://revealjs.com/plugins/
+				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
+			});
+		</script>
+
+
+</body>
+</html>
